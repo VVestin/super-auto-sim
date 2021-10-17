@@ -19,12 +19,13 @@ class Animal {
    }
 
    hurt(actionQueue, mySquad, enemySquad, damage) {
-      console.log(this, 'takes', damage, 'damage')
+      console.log(this.toString(), 'takes', damage, 'damage')
       this.health -= damage
       if (this.health <= 0) this.faint(actionQueue, mySquad, enemySquad)
    }
 
    faint(actionQueue, mySquad, enemySquad) {
+      console.log(this.toString(), 'has fainted')
       mySquad.roster[mySquad.roster.indexOf(this)] = null
    }
 
@@ -58,7 +59,7 @@ class Beaver extends Animal {
    health = 2
 }
 
-class Cricket {
+class Cricket extends Animal {
    attack = 1
    health = 2
 
@@ -75,21 +76,26 @@ class Cricket {
    }
 }
 
-class DeadCricket {}
+class DeadCricket extends Animal {}
 
-class Mosquito {
+class Fish extends Animal {
+   attack = 2
+   health = 3
+}
+
+class Mosquito extends Animal {
    attack = 2
    health = 2
 
    startBattle(actionQueue, mySquad, enemySquad) {
       const target = enemySquad.getRandomTarget()
       actionQueue.push(
-         target.hurt.bind(target, actionQueue, mySquad, enemySquad, this.level)
+         target.hurt.bind(target, actionQueue, enemySquad, mySquad, this.level)
       )
    }
 }
 
-module.exports = { Ant, Beaver, Cricket, DeadCricket }
+module.exports = { Ant, Beaver, Cricket, DeadCricket, Fish, Mosquito }
 
 // const tier1s = [Ant, Beaver]
 //

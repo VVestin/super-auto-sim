@@ -30,6 +30,10 @@ class Squad {
    spawnUnit(index, spawn) {
       if (this.roster.length < 5) this.roster.splice(index, 0, spawn)
    }
+
+   toString() {
+      return this.roster.map(String).join(' ')
+   }
 }
 
 const printSquads = (lSquad, rSquad) => {
@@ -37,7 +41,7 @@ const printSquads = (lSquad, rSquad) => {
       '{',
       lSquad.roster.map(String).reverse().join(' '),
       '} vs {',
-      lSquad.roster.map(String).join(' '),
+      rSquad.roster.map(String).join(' '),
       '}'
    )
 }
@@ -48,22 +52,24 @@ const simulateBattle = (lSquad, rSquad) => {
    printSquads(lSquad, rSquad)
    const actionQueue = []
    // execute start of battle powers
-   lSquad.roster.forEach(a => a.startBattle(actionQueue, lSquad, rSquad))
-   rSquad.roster.forEach(a => a.startBattle(actionQueue, rSquad, lSquad))
+   lSquad.roster.forEach(a => a && a.startBattle(actionQueue, lSquad, rSquad))
+   rSquad.roster.forEach(a => a && a.startBattle(actionQueue, rSquad, lSquad))
 
-   let turnCount = 1
+   let turnCount = 0
    do {
+      console.log(`\nturn ${turnCount++}`)
+      printSquads(lSquad, rSquad)
+
       let a
       while ((a = actionQueue.shift())) {
          console.log('executing', a)
          a()
       }
+
       lSquad.roster = lSquad.roster.filter(x => x)
       rSquad.roster = rSquad.roster.filter(x => x)
       if (lSquad.roster.length == 0 || rSquad.roster.length == 0) continue
 
-      console.log(`\nturn ${turnCount++}`)
-      printSquads(lSquad, rSquad)
       lSquad.roster[0].attackFront(actionQueue, lSquad, rSquad)
       rSquad.roster[0].attackFront(actionQueue, rSquad, lSquad)
    } while (actionQueue.length > 0)
@@ -79,6 +85,6 @@ const simulateBattle = (lSquad, rSquad) => {
    else console.log('Tie :|')
 }
 
-const exSquad1 = new Squad([new Animals.Beaver(), new Animals.Ant()])
-const exSquad2 = new Squad([new Animals.Ant(), new Animals.Beaver()])
+const exSquad1 = new Squad([new Animals.Fish()])
+const exSquad2 = new Squad([new Animals.Cricket()])
 simulateBattle(exSquad1, exSquad2)
