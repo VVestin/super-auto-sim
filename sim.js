@@ -1,24 +1,31 @@
 const Animals = require('./animals')
 
-goat_squad = {
-   wins: 10,
-   hearts: 1,
-   turn: 16,
-   roster: [
-      { animal: 'dodo', attack: 32, health: 34, level: 3 },
-      { animal: 'tiger', attack: 8, health: 7, level: 1 },
-      { animal: 'leopard', attack: 17, health: 15, level: 3 },
-      { animal: 'turtle', attack: 13, health: 15, level: 1.5, food: 'steak' },
-      { animal: 'monkey', attack: 37, health: 37, level: 2, food: 'melon' },
-   ],
-}
-
 class Squad {
-   constructor(roster, wins = 0, hearts = 4, turn = 1) {
+   animalSlots = []
+   foodSlots = []
+
+   constructor(roster, wins = 0, losses = 0, turn = 1) {
       this.roster = roster
       this.wins = wins
-      this.hearts = hearts
+      this.losses = losses
       this.turn = turn
+   }
+
+   rollShop() {
+      const maxTier = Math.min(6, Math.floor((this.turn + 1) / 2))
+      const possibleAnimals = Animals.slice(1, maxTier + 1)
+         .map(Object.values)
+         .flat()
+
+      this.animalSlots.length = this.turn < 5 ? 3 : 4
+      for (let i = 0; i < this.animalSlots.length; i++)
+         if (!this.animalSlots[i] || !this.animalSlots[i].frozen)
+            this.animalSlots[i] =
+               possibleAnimals[
+                  Math.floor(Math.random() * possibleAnimals.length)
+               ]
+
+      console.log(this.animalSlots)
    }
 
    getRandomTarget() {
@@ -49,6 +56,8 @@ const printSquads = (lSquad, rSquad) => {
 const clone = o => Object.assign(Object.create(Object.getPrototypeOf(o)), o)
 
 const simulateBattle = (lSquad, rSquad) => {
+   const lSavedRoster = lSquad.roster.map(clone)
+   const rSavedRoster = rSquad.roster.map(clone)
    printSquads(lSquad, rSquad)
    const actionQueue = []
    // execute start of battle powers
@@ -78,13 +87,29 @@ const simulateBattle = (lSquad, rSquad) => {
    console.log('The Final Squads are:')
    printSquads(lSquad, rSquad)
    console.log('The Outcome is:')
-   if (lSquad.roster.length && !rSquad.roster.length)
+   if (lSquad.roster.length && !rSquad.roster.length) {
+      lSquad.wins++
+      rSquad.losses++
       console.log('Left Wins :)')
-   else if (!lSquad.roster.length && rSquad.roster.length)
+   } else if (!lSquad.roster.length && rSquad.roster.length) {
+      rSquad.wins++
+      lSquad.losses++
       console.log('Right Wins :(')
-   else console.log('Tie :|')
+   } else console.log('Tie :|')
+
+   lSquad.turn++
+   rSquad.turn++
+
+   lSquad.roster = lSavedRoster
+   rSquad.roster = rSavedRoster
 }
 
-const exSquad1 = new Squad([new Animals.Fish()])
-const exSquad2 = new Squad([new Animals.Cricket()])
-simulateBattle(exSquad1, exSquad2)
+const s = new Squad([], 0, 0, 5)
+s.rollShop()
+
+// const exSquad1 = new Squad([new Animals[1].Fish()])
+// const exSquad2 = new Squad([new Animals[1].Cricket()])
+// simulateBattle(exSquad1, exSquad2)
+// simulateBattle(exSquad1, exSquad2)
+// console.log(exSquad1)
+// console.log(exSquad2)

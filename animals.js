@@ -1,8 +1,9 @@
 class Animal {
-   constructor(attack, health, level = 1, food = null) {
+   constructor(attack, health, level = 1, experience = 0, food = null) {
       this.attack = attack
       this.health = health
       this.level = level
+      this.experience = experience
       this.food = food
    }
 
@@ -36,6 +37,7 @@ class Animal {
    }
 }
 
+// Tier 1 animals:
 class Ant extends Animal {
    attack = 2
    health = 1
@@ -70,7 +72,7 @@ class Cricket extends Animal {
          mySquad.spawnUnit.bind(
             mySquad,
             myIndex,
-            new DeadCricket(this.level, this.level)
+            new DeadCricket(this.level, this.level, this.level)
          )
       )
    }
@@ -95,7 +97,23 @@ class Mosquito extends Animal {
    }
 }
 
-module.exports = { Ant, Beaver, Cricket, DeadCricket, Fish, Mosquito }
+// Tier 2 animals:
+class Crab extends Animal {
+   attack = 3
+   health = 3
+}
+
+class Dodo extends Animal {
+   attack = 1
+   health = 3
+}
+
+// organized into tiers (1 indexed for clarity)
+module.exports = [
+   null,
+   { Ant, Beaver, Cricket, Fish, Mosquito },
+   { Crab, Dodo },
+]
 
 // const tier1s = [Ant, Beaver]
 //
