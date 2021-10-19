@@ -30,10 +30,40 @@ class Animal {
       mySquad.roster[mySquad.roster.indexOf(this)] = null
    }
 
-   startBattle() {}
+   combine(animal, mySquad) {
+      // make sure the bugger animal absorbs the smaller animal
+      if ([this.level, this.experience] < [animal.level, animal.experience])
+         return animal.combine(this, mySquad)
+
+      this.experience += animal.experience
+      if (animal.level == 1) this.experience += 1
+      else if (animal.level == 2) this.experience += 3
+
+      if (this.experience > this.level) {
+         this.level++
+         this.experience -= this.level
+
+         this.levelUp(mySquad)
+      }
+
+      this.attack = 1 + Math.max(this.attack, animal.attack)
+      this.health = 1 + Math.max(this.health, animal.health)
+
+      return this
+   }
+
+   // TODO should these start with 'on'? like onBuy, onSell, etc.
+   startBattle(actionQueue, mySquad, enemySquad) {}
+   startTurn(mySquad) {}
+   buy(mySquad) {}
+   sell(mySquad) {}
+   friendSummoned(actionQueue, mySquad, enemySquad) {}
+   levelUp(mySquad) {}
 
    toString() {
-      return `[${this.constructor.name} ${this.attack}/${this.health}]`
+      return `[L${this.level + 0.1 * this.experience} ${
+         this.constructor.name
+      } ${this.attack}/${this.health}]`
    }
 }
 
@@ -69,7 +99,7 @@ class Cricket extends Animal {
       const myIndex = mySquad.roster.indexOf(this)
       super.faint(actionQueue, mySquad, enemySquad)
       actionQueue.push(
-         mySquad.spawnUnit.bind(
+         mySquad.summonAnimal.bind(
             mySquad,
             myIndex,
             new DeadCricket(this.level, this.level, this.level)
@@ -90,6 +120,7 @@ class Mosquito extends Animal {
    health = 2
 
    startBattle(actionQueue, mySquad, enemySquad) {
+      super.startBattle(actionQueue, mySquad, enemySquad)
       const target = enemySquad.getRandomTarget()
       actionQueue.push(
          target.hurt.bind(target, actionQueue, enemySquad, mySquad, this.level)
@@ -114,11 +145,3 @@ module.exports = [
    { Ant, Beaver, Cricket, Fish, Mosquito },
    { Crab, Dodo },
 ]
-
-// const tier1s = [Ant, Beaver]
-//
-// let a = new Beaver()
-// console.log(a instanceof Animal)
-// let b = Object.assign(Object.create(Beaver.prototype), a)
-// console.log(b)
-// console.log(b instanceof Beaver)
