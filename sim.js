@@ -110,7 +110,8 @@ const printSquads = (lSquad, rSquad) => {
    )
 }
 
-const clone = o => Object.assign(Object.create(Object.getPrototypeOf(o)), o)
+const clone = o =>
+   o && Object.assign(Object.create(Object.getPrototypeOf(o)), o)
 
 const simulateBattle = (lSquad, rSquad) => {
    const lSavedRoster = lSquad.roster.map(clone)
@@ -161,18 +162,21 @@ const simulateBattle = (lSquad, rSquad) => {
    rSquad.roster = rSavedRoster
 }
 
-const s = new Squad()
-s.startTurn()
-s.buyAnimal(1, 0)
-console.log()
-console.log('squad', s.toString())
-console.log('shop', s.animalSlots.map(String))
+if (!module.parent) {
+   const s = new Squad()
+   s.startTurn()
+   s.buyAnimal(1, 0)
+   console.log()
+   console.log('squad', s.toString())
+   console.log('shop', s.animalSlots.map(String))
 
-s.buyAnimal(0, 0)
-console.log()
-console.log('squad', s.toString())
-console.log('shop', s.animalSlots.map(String))
+   s.buyAnimal(0, 0)
+   console.log()
+   console.log('squad', s.toString())
+   console.log('shop', s.animalSlots.map(String))
+}
 
+module.exports = { Squad, simulateBattle }
 // const exSquad1 = new Squad([new Animals[1].Fish()])
 // const exSquad2 = new Squad([new Animals[1].Cricket()])
 // simulateBattle(exSquad1, exSquad2)

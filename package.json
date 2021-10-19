@@ -1,0 +1,22 @@
+{
+  "name": "super-auto-sim",
+  "version": "1.0.0",
+  "description": "A super auto pets battle simulator",
+  "main": "animals.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://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@github.com/VVestin/super-auto-sim.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VVestin/super-auto-sim/issues"
+  },
+  "homepage": "https://github.com/VVestin/super-auto-sim#readme",
+  "devDependencies": {
+    "jest": "^27.3.0"
+  }
+}
