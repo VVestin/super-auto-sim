@@ -22,13 +22,13 @@ class Animal {
    }
 
    hurt(actionQueue, mySquad, enemySquad, damage) {
-      log.info(this.toString(), 'takes', damage, 'damage')
+      log.trace(this.toString(), 'takes', damage, 'damage')
       this.health -= damage
       if (this.health <= 0) this.faint(actionQueue, mySquad, enemySquad)
    }
 
    faint(actionQueue, mySquad, enemySquad) {
-      log.info(this.toString(), 'has fainted')
+      log.trace(this.toString(), 'has fainted')
       mySquad.roster[mySquad.roster.indexOf(this)] = null
    }
 

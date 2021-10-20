@@ -47,7 +47,7 @@ class Squad {
                Math.floor(Math.random() * possibleAnimals.length)
             ]()
 
-      log.info('rolled animal slots', this.animalSlots.map(String))
+      log.trace('rolled animal slots', this.animalSlots.map(String))
    }
 
    buyAnimal(shopIndex, rosterIndex) {
@@ -110,7 +110,7 @@ class Squad {
 }
 
 const printSquads = (lSquad, rSquad) => {
-   log.info(
+   log.trace(
       '{',
       lSquad.roster.map(String).reverse().join(' '),
       '} vs {',
@@ -133,12 +133,12 @@ const simulateBattle = (lSquad, rSquad) => {
 
    let turnCount = 0
    do {
-      log.info(`\nturn ${turnCount++}`)
+      log.trace(`\nturn ${turnCount++}`)
       printSquads(lSquad, rSquad)
 
       let a
       while ((a = actionQueue.shift())) {
-         log.info('executing', a)
+         log.trace('executing', a)
          a()
       }
 
@@ -150,19 +150,19 @@ const simulateBattle = (lSquad, rSquad) => {
       rSquad.roster[0].attackFront(actionQueue, rSquad, lSquad)
    } while (actionQueue.length > 0)
 
-   log.info()
-   log.info('The Final Squads are:')
+   log.trace()
+   log.trace('The Final Squads are:')
    printSquads(lSquad, rSquad)
-   log.info('The Outcome is:')
+   log.trace('The Outcome is:')
    if (lSquad.roster[0] && !rSquad.roster[0]) {
       lSquad.wins++
       rSquad.losses++
-      log.info('Left Wins :)')
+      log.trace('Left Wins :)')
    } else if (!lSquad.roster[0] && rSquad.roster[0]) {
       rSquad.wins++
       lSquad.losses++
-      log.info('Right Wins :(')
-   } else log.info('Tie :|')
+      log.trace('Right Wins :(')
+   } else log.trace('Tie :|')
 
    const lRet = lSquad.roster
    const rRet = rSquad.roster
@@ -179,14 +179,14 @@ if (!module.parent) {
    const s = new Squad()
    s.startTurn()
    s.buyAnimal(1, 0)
-   log.info()
-   log.info('squad', s.toString())
-   log.info('shop', s.animalSlots.map(String))
+   log.trace()
+   log.trace('squad', s.toString())
+   log.trace('shop', s.animalSlots.map(String))
 
    s.buyAnimal(0, 0)
-   log.info()
-   log.info('squad', s.toString())
-   log.info('shop', s.animalSlots.map(String))
+   log.trace()
+   log.trace('squad', s.toString())
+   log.trace('shop', s.animalSlots.map(String))
 }
 
 module.exports = { Squad, simulateBattle }
