@@ -90,12 +90,12 @@ class Ant extends Animal {
 
 class Beaver extends Animal {
    static baseAttack = 2
-   static defaultHealth = 2
+   static baseHealth = 2
 }
 
 class Cricket extends Animal {
-   static defaultAttack = 1
-   static defaultHealth = 2
+   static baseAttack = 1
+   static baseHealth = 2
 
    faint(actionQueue, mySquad, enemySquad) {
       const myIndex = mySquad.roster.indexOf(this)
@@ -112,14 +112,19 @@ class Cricket extends Animal {
 
 class DeadCricket extends Animal {}
 
+class Duck extends Animal {
+   static baseAttack = 1
+   static baseHealth = 2
+}
+
 class Fish extends Animal {
-   static defaultAttack = 2
-   static defaultHealth = 3
+   static baseAttack = 2
+   static baseHealth = 3
 }
 
 class Mosquito extends Animal {
-   static defaultAttack = 2
-   static defaultHealth = 2
+   static baseAttack = 2
+   static baseHealth = 2
 
    startBattle(actionQueue, mySquad, enemySquad) {
       super.startBattle(actionQueue, mySquad, enemySquad)
@@ -132,8 +137,8 @@ class Mosquito extends Animal {
 
 // Tier 2 animals:
 class Crab extends Animal {
-   static defaultAttack = 3
-   static defaultHealth = 3
+   static baseAttack = 3
+   static baseHealth = 3
 
    startBattle(actionQueue, mySquad, enemySquad) {
       super.startBattle(actionQueue, mySquad, enemySquad)
@@ -145,11 +150,19 @@ class Crab extends Animal {
 class Dodo extends Animal {
    static baseAttack = 1
    static baseHealth = 3
+   startBattle(actionQueue, mySquad, enemySquad) {
+      super.startBattle(actionQueue, mySquad, enemySquad)
+      // TODO change this when dodo gets nerfed
+      for (let i = 1; i <= this.level; i++) {
+         const target = mySquad.getAnimalRelative(this, -i)
+         if (target) target.attack += this.attack
+      }
+   }
 }
 
 // organized into tiers (1 indexed for clarity)
 module.exports = [
    null,
-   { Ant, Beaver, Cricket, Fish, Mosquito },
+   { Ant, Beaver, Cricket, Fish, Mosquito, Duck },
    { Crab, Dodo },
 ]

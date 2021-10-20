@@ -34,13 +34,31 @@ describe('battle simulation', () => {
 })
 
 describe('animals', () => {
-   it('crab gets health at start of battle', () => {
-      const squad = new Squad([
-         new Animals[1].Fish(5, 10),
-         new Animals[2].Crab(),
-      ])
-      const [roster] = simulateBattle(squad, new Squad())
-      expect(roster[0]).to.have.property('health', 10)
-      expect(roster[1]).to.have.property('health', 10)
+   describe('crab', () => {
+      it('gets health at start of battle', () => {
+         const squad = new Squad([
+            new Animals[1].Fish(5, 10),
+            new Animals[2].Crab(),
+         ])
+         const [roster] = simulateBattle(squad, new Squad())
+         expect(roster[0]).to.have.property('health', 10)
+         expect(roster[1]).to.have.property('health', 10)
+      })
+   })
+
+   describe('dodo', () => {
+      it('gives attack to 2 ahead at level 2', () => {
+         const squad = new Squad([
+            new Animals[1].Duck(1, 1),
+            new Animals[1].Cricket(1, 1),
+            new Animals[1].Ant(1, 1),
+            new Animals[2].Dodo(10, 4, 2),
+         ])
+         const [roster] = simulateBattle(squad, new Squad())
+         expect(roster[0]).to.have.property('attack', 1)
+         expect(roster[1]).to.have.property('attack', 11)
+         expect(roster[2]).to.have.property('attack', 11)
+         expect(roster[3]).to.have.property('attack', 10)
+      })
    })
 })
