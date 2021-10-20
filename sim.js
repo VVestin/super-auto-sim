@@ -1,4 +1,5 @@
 const Animals = require('./animals')
+const log = require('loglevel')
 
 class Squad {
    animalSlots = []
@@ -7,6 +8,8 @@ class Squad {
 
    constructor(roster = new Array(5).fill(null), wins, losses, turn) {
       this.roster = roster
+      while (roster.length < 5) roster.push(null)
+
       this.wins = wins || 0
       this.losses = losses || 0
       this.turn = turn || 0
@@ -44,7 +47,7 @@ class Squad {
                Math.floor(Math.random() * possibleAnimals.length)
             ]()
 
-      console.log('rolled animal slots', this.animalSlots.map(String))
+      log.info('rolled animal slots', this.animalSlots.map(String))
    }
 
    buyAnimal(shopIndex, rosterIndex) {
@@ -73,6 +76,12 @@ class Squad {
       animal.sell(this)
    }
 
+   getAnimalRelative(animal, offset) {
+      const index = this.roster.indexOf(animal)
+      if (index == -1 || !this.roster[index + offset]) return null
+      return this.roster[index + offset]
+   }
+
    getRandomTarget() {
       const eligible = this.roster.filter(a => a)
       if (eligible.length == 0) return null
@@ -81,7 +90,7 @@ class Squad {
 
    summonAnimal(index, animal) {
       if (!this.roster.includes(null))
-         return console.log(animal, 'could not be summoned (no space)')
+         return log.warn(animal, 'could not be summoned (no space)')
       this.roster.splice(index, 0, animal)
       this.roster.splice(this.roster.indexOf(null), 1)
    }
@@ -101,7 +110,7 @@ class Squad {
 }
 
 const printSquads = (lSquad, rSquad) => {
-   console.log(
+   log.info(
       '{',
       lSquad.roster.map(String).reverse().join(' '),
       '} vs {',
@@ -124,12 +133,12 @@ const simulateBattle = (lSquad, rSquad) => {
 
    let turnCount = 0
    do {
-      console.log(`\nturn ${turnCount++}`)
+      log.info(`\nturn ${turnCount++}`)
       printSquads(lSquad, rSquad)
 
       let a
       while ((a = actionQueue.shift())) {
-         console.log('executing', a)
+         log.info('executing', a)
          a()
       }
 
@@ -141,39 +150,43 @@ const simulateBattle = (lSquad, rSquad) => {
       rSquad.roster[0].attackFront(actionQueue, rSquad, lSquad)
    } while (actionQueue.length > 0)
 
-   console.log()
-   console.log('The Final Squads are:')
+   log.info()
+   log.info('The Final Squads are:')
    printSquads(lSquad, rSquad)
-   console.log('The Outcome is:')
+   log.info('The Outcome is:')
    if (lSquad.roster[0] && !rSquad.roster[0]) {
       lSquad.wins++
       rSquad.losses++
-      console.log('Left Wins :)')
+      log.info('Left Wins :)')
    } else if (!lSquad.roster[0] && rSquad.roster[0]) {
       rSquad.wins++
       lSquad.losses++
-      console.log('Right Wins :(')
-   } else console.log('Tie :|')
+      log.info('Right Wins :(')
+   } else log.info('Tie :|')
 
-   lSquad.turn++
-   rSquad.turn++
+   const lRet = lSquad.roster
+   const rRet = rSquad.roster
 
    lSquad.roster = lSavedRoster
    rSquad.roster = rSavedRoster
+
+   return [lRet, rRet]
 }
 
 if (!module.parent) {
+   log.setLevel(log.levels.TRACE)
+
    const s = new Squad()
    s.startTurn()
    s.buyAnimal(1, 0)
-   console.log()
-   console.log('squad', s.toString())
-   console.log('shop', s.animalSlots.map(String))
+   log.info()
+   log.info('squad', s.toString())
+   log.info('shop', s.animalSlots.map(String))
 
    s.buyAnimal(0, 0)
-   console.log()
-   console.log('squad', s.toString())
-   console.log('shop', s.animalSlots.map(String))
+   log.info()
+   log.info('squad', s.toString())
+   log.info('shop', s.animalSlots.map(String))
 }
 
 module.exports = { Squad, simulateBattle }
