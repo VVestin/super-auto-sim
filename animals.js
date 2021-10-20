@@ -1,7 +1,9 @@
+const log = require('loglevel')
+
 class Animal {
    constructor(attack, health, level = 1, experience = 0, food = null) {
-      this.attack = attack
-      this.health = health
+      this.attack = attack || this.constructor.baseAttack
+      this.health = health || this.constructor.baseHealth
       this.level = level
       this.experience = experience
       this.food = food
@@ -20,13 +22,13 @@ class Animal {
    }
 
    hurt(actionQueue, mySquad, enemySquad, damage) {
-      console.log(this.toString(), 'takes', damage, 'damage')
+      log.info(this.toString(), 'takes', damage, 'damage')
       this.health -= damage
       if (this.health <= 0) this.faint(actionQueue, mySquad, enemySquad)
    }
 
    faint(actionQueue, mySquad, enemySquad) {
-      console.log(this.toString(), 'has fainted')
+      log.info(this.toString(), 'has fainted')
       mySquad.roster[mySquad.roster.indexOf(this)] = null
    }
 
@@ -69,8 +71,8 @@ class Animal {
 
 // Tier 1 animals:
 class Ant extends Animal {
-   attack = 2
-   health = 1
+   static baseAttack = 2
+   static baseHealth = 1
 
    faint(actionQueue, mySquad, enemySquad) {
       super.faint(actionQueue, mySquad, enemySquad)
@@ -87,13 +89,13 @@ class Ant extends Animal {
 }
 
 class Beaver extends Animal {
-   attack = 2
-   health = 2
+   static baseAttack = 2
+   static defaultHealth = 2
 }
 
 class Cricket extends Animal {
-   attack = 1
-   health = 2
+   static defaultAttack = 1
+   static defaultHealth = 2
 
    faint(actionQueue, mySquad, enemySquad) {
       const myIndex = mySquad.roster.indexOf(this)
@@ -111,13 +113,13 @@ class Cricket extends Animal {
 class DeadCricket extends Animal {}
 
 class Fish extends Animal {
-   attack = 2
-   health = 3
+   static defaultAttack = 2
+   static defaultHealth = 3
 }
 
 class Mosquito extends Animal {
-   attack = 2
-   health = 2
+   static defaultAttack = 2
+   static defaultHealth = 2
 
    startBattle(actionQueue, mySquad, enemySquad) {
       super.startBattle(actionQueue, mySquad, enemySquad)
@@ -130,13 +132,19 @@ class Mosquito extends Animal {
 
 // Tier 2 animals:
 class Crab extends Animal {
-   attack = 3
-   health = 3
+   static defaultAttack = 3
+   static defaultHealth = 3
+
+   startBattle(actionQueue, mySquad, enemySquad) {
+      super.startBattle(actionQueue, mySquad, enemySquad)
+      const target = mySquad.getAnimalRelative(this, -1)
+      if (target) this.health = target.health
+   }
 }
 
 class Dodo extends Animal {
-   attack = 1
-   health = 3
+   static baseAttack = 1
+   static baseHealth = 3
 }
 
 // organized into tiers (1 indexed for clarity)
