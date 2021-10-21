@@ -2,11 +2,31 @@ const log = require('loglevel')
 
 module.exports = class Animal {
    constructor(attack, health, level = 1, experience = 0, food = null) {
-      this.attack = attack || this.constructor.baseAttack
-      this.health = health || this.constructor.baseHealth
+      this._attack = attack || this.constructor.baseAttack
+      this._health = health || this.constructor.baseHealth
       this.level = level
       this.experience = experience
       this.food = food
+      this.tempAttack = 0
+      this.tempHealth = 0
+   }
+
+   get attack() {
+      return this._attack + this.tempAttack
+   }
+
+   get health() {
+      return this._health + this.tempHealth
+   }
+
+   tempBuff(attackBuff, healthBuff) {
+      this.tempAttack += attackBuff
+      this.tempHealth += healthBuff
+   }
+
+   buff(attackBuff, healthBuff) {
+      this._attack += attackBuff
+      this._health += healthBuff
    }
 
    attackFront(actionQueue, mySquad, enemySquad) {
@@ -22,13 +42,13 @@ module.exports = class Animal {
    }
 
    hurt(actionQueue, mySquad, enemySquad, damage) {
-      log.trace(this.toString(), 'takes', damage, 'damage')
-      this.health -= damage
+      log.info(this.toString(), 'takes', damage, 'damage')
+      this._health -= damage
       if (this.health <= 0) this.faint(actionQueue, mySquad, enemySquad)
    }
 
    faint(actionQueue, mySquad, enemySquad) {
-      log.trace(this.toString(), 'has fainted')
+      log.info(this.toString(), 'has fainted')
       mySquad.roster[mySquad.roster.indexOf(this)] = null
    }
 
@@ -48,18 +68,24 @@ module.exports = class Animal {
          this.levelUp(mySquad)
       }
 
-      this.attack = 1 + Math.max(this.attack, animal.attack)
-      this.health = 1 + Math.max(this.health, animal.health)
+      this._attack = Math.max(this.attack, animal.attack)
+      this._health = Math.max(this.health, animal.health)
+      this.buff(1, 1)
 
       return this
    }
 
+   startTurn(mySquad) {
+      this.tempAttack = 0
+      this.tempHealth = 0
+   }
+
    // TODO should these start with 'on'? like onBuy, onSell, etc.
+   endTurn() {}
    startBattle(actionQueue, mySquad, enemySquad) {}
-   startTurn(mySquad) {}
    buy(mySquad) {}
    sell(mySquad) {}
-   friendSummoned(actionQueue, mySquad, enemySquad) {}
+   friendSummoned(friend, actionQueue, mySquad, enemySquad) {} // change this argument order to be better?
    levelUp(mySquad) {}
 
    toString() {

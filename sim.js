@@ -47,7 +47,7 @@ class Squad {
                Math.floor(Math.random() * possibleAnimals.length)
             ]()
 
-      log.trace('rolled animal slots', this.animalSlots.map(String))
+      log.info('rolled animal slots', this.animalSlots.map(String))
    }
 
    buyAnimal(shopIndex, rosterIndex) {
@@ -93,6 +93,8 @@ class Squad {
          return log.warn(animal, 'could not be summoned (no space)')
       this.roster.splice(index, 0, animal)
       this.roster.splice(this.roster.indexOf(null), 1)
+      for (let a of this.roster)
+         if (a && a != animal) a.friendSummoned(animal, [], this)
    }
 
    // guarentees there is an animal in slot 0 (if there are still any animals left on the roster)
@@ -110,11 +112,18 @@ class Squad {
 }
 
 const printSquads = (lSquad, rSquad) => {
-   log.trace(
+   log.info(
       '{',
-      lSquad.roster.map(String).reverse().join(' '),
+      lSquad.roster
+         .filter(a => a)
+         .map(String)
+         .reverse()
+         .join(' '),
       '} vs {',
-      rSquad.roster.map(String).join(' '),
+      rSquad.roster
+         .filter(a => a)
+         .map(String)
+         .join(' '),
       '}'
    )
 }
@@ -133,12 +142,12 @@ const simulateBattle = (lSquad, rSquad) => {
 
    let turnCount = 0
    do {
-      log.trace(`\nturn ${turnCount++}`)
+      log.info(`\nturn ${turnCount++}`)
       printSquads(lSquad, rSquad)
 
       let a
       while ((a = actionQueue.shift())) {
-         log.trace('executing', a)
+         log.info('executing', a)
          a()
       }
 
@@ -150,19 +159,19 @@ const simulateBattle = (lSquad, rSquad) => {
       rSquad.roster[0].attackFront(actionQueue, rSquad, lSquad)
    } while (actionQueue.length > 0)
 
-   log.trace()
-   log.trace('The Final Squads are:')
+   log.info()
+   log.info('The Final Squads are:')
    printSquads(lSquad, rSquad)
-   log.trace('The Outcome is:')
+   log.info('The Outcome is:')
    if (lSquad.roster[0] && !rSquad.roster[0]) {
       lSquad.wins++
       rSquad.losses++
-      log.trace('Left Wins :)')
+      log.info('Left Wins :)')
    } else if (!lSquad.roster[0] && rSquad.roster[0]) {
       rSquad.wins++
       lSquad.losses++
-      log.trace('Right Wins :(')
-   } else log.trace('Tie :|')
+      log.info('Right Wins :(')
+   } else log.info('Tie :|')
 
    const lRet = lSquad.roster
    const rRet = rSquad.roster
@@ -179,14 +188,14 @@ if (!module.parent) {
    const s = new Squad()
    s.startTurn()
    s.buyAnimal(1, 0)
-   log.trace()
-   log.trace('squad', s.toString())
-   log.trace('shop', s.animalSlots.map(String))
+   log.info()
+   log.info('squad', s.toString())
+   log.info('shop', s.animalSlots.map(String))
 
    s.buyAnimal(0, 0)
-   log.trace()
-   log.trace('squad', s.toString())
-   log.trace('shop', s.animalSlots.map(String))
+   log.info()
+   log.info('squad', s.toString())
+   log.info('shop', s.animalSlots.map(String))
 }
 
 module.exports = { Squad, simulateBattle }

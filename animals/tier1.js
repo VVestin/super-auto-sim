@@ -10,8 +10,7 @@ class Ant extends Animal {
       const buffFriend = () => {
          const target = mySquad.getRandomTarget()
          if (target != null) {
-            target.attack += 2 * this.level
-            target.health += this.level
+            target.buff(2 * this.level, this.level)
          }
       }
       actionQueue.push(buffFriend)
@@ -52,6 +51,15 @@ class Fish extends Animal {
    static baseHealth = 3
 }
 
+class Horse extends Animal {
+   static baseAttack = 1
+   static baseHealth = 1
+
+   friendSummoned(friend, mySquad, enemySquad) {
+      friend.tempAttack += 1
+   }
+}
+
 class Mosquito extends Animal {
    static baseAttack = 2
    static baseHealth = 2
@@ -65,4 +73,13 @@ class Mosquito extends Animal {
    }
 }
 
-module.exports = { Ant, Beaver, Cricket, Duck, Fish, Mosquito }
+module.exports = {
+   Ant,
+   Beaver,
+   Cricket,
+   DeadCricket,
+   Duck,
+   Fish,
+   Horse,
+   Mosquito,
+}
