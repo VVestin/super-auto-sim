@@ -1,4 +1,4 @@
-const Animals = require('../animals.js')
+const Animals = require('../animals')
 const { Squad, simulateBattle } = require('../sim.js')
 const log = require('loglevel')
 const expect = require('chai').expect
