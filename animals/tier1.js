@@ -44,6 +44,12 @@ class DeadCricket extends Animal {}
 class Duck extends Animal {
    static baseAttack = 1
    static baseHealth = 2
+
+   sell(mySquad) {
+      mySquad.animalSlots.forEach(a => {
+         if (a) a.buff(this.level, this.level)
+      })
+   }
 }
 
 class Fish extends Animal {

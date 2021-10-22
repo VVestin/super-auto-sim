@@ -18,7 +18,7 @@ describe('battle simulation', () => {
       expect(squadB).to.have.property('losses', 0)
    })
 
-   it('any team beats an empty team', () => {
+   it('a team with one member beats an empty team', () => {
       const squadA = new Squad([new Animals[1].Beaver()])
       const squadB = new Squad()
 
@@ -111,6 +111,22 @@ describe('tier 1 animals', () => {
          expect(squad.roster[1]).to.have.property('attack', prevAttack + 1)
          expect(squad.roster[1]).to.have.property('health', prevHealth + 1)
          expect(squad).to.have.property('gold', 1)
+      })
+   })
+
+   describe('duck', () => {
+      it('buffs shop animals on sell', () => {
+         const squad = new Squad([new Animals[1].Duck(undefined, undefined, 2)])
+         squad.startTurn()
+         const attack1 = squad.animalSlots[0].attack
+         const health1 = squad.animalSlots[0].health
+         const attack2 = squad.animalSlots[1].attack
+         const health2 = squad.animalSlots[1].health
+         squad.sell(0)
+         expect(squad.animalSlots[0]).to.have.property('attack', attack1 + 2)
+         expect(squad.animalSlots[0]).to.have.property('health', health1 + 2)
+         expect(squad.animalSlots[1]).to.have.property('attack', attack2 + 2)
+         expect(squad.animalSlots[1]).to.have.property('health', health2 + 2)
       })
    })
 })
