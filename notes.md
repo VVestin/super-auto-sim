@@ -37,7 +37,7 @@ Animal list (updated Oct 20, 2021)
 - [x] Fish 2/3 - Level up (give all friends +1/+1)
 - [x] Horse 1/1 - Friend summoned (give them +1 attack)
 - [x] Mosquito 2/2 - Battle start (deal 1 damage to random enemy)
-- [ ] Otter 1/2 - Buy (give friend +1/+1)
+- [x] Otter 1/2 - Buy (give friend +1/+1)
 - [x] Pig 2/2 - Sell (gain 1 extra gold)
 
 ## Tier 2

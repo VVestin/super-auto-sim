@@ -73,6 +73,16 @@ class Mosquito extends Animal {
    }
 }
 
+class Otter extends Animal {
+   static baseAttack = 1
+   static baseHealth = 2
+
+   buy(mySquad) {
+      const target = mySquad.getRandomTarget(this)
+      if (target) target.buff(1, 1)
+   }
+}
+
 class Pig extends Animal {
    static baseAttack = 2
    static baseHealth = 2
@@ -92,5 +102,6 @@ module.exports = {
    Fish,
    Horse,
    Mosquito,
+   Otter,
    Pig,
 }

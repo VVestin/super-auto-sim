@@ -93,6 +93,26 @@ describe('tier 1 animals', () => {
          expect(squad.roster).have.lengthOf(5).and.to.all.equal(null)
       })
    })
+
+   describe('otter', () => {
+      it('buffs correctly on buy', () => {
+         const squad = new Squad()
+         squad.startTurn()
+         squad.animalSlots[0] = new Animals[1].Otter()
+         squad.animalSlots[1] = new Animals[1].Otter()
+         squad.buyAnimal(0, 0)
+         expect(squad.roster[0]).to.be.instanceOf(Animals[1].Otter)
+         expect(squad.roster[0]).to.have.property('attack', 1)
+         expect(squad.roster[0]).to.have.property('health', 2)
+         squad.buyAnimal(2, 1)
+         const prevAttack = squad.roster[1].attack
+         const prevHealth = squad.roster[1].health
+         squad.buyAnimal(1, 0)
+         expect(squad.roster[1]).to.have.property('attack', prevAttack + 1)
+         expect(squad.roster[1]).to.have.property('health', prevHealth + 1)
+         expect(squad).to.have.property('gold', 1)
+      })
+   })
 })
 
 describe('tier 2 animals', () => {

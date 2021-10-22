@@ -82,8 +82,8 @@ class Squad {
       return this.roster[index + offset]
    }
 
-   getRandomTarget() {
-      const eligible = this.roster.filter(a => a)
+   getRandomTarget(ineligible) {
+      const eligible = this.roster.filter(a => a && a != ineligible)
       if (eligible.length == 0) return null
       return eligible[Math.floor(Math.random() * eligible.length)]
    }
