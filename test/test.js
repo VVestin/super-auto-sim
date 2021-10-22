@@ -83,6 +83,7 @@ describe('tier 1 animals', () => {
             .with.property('attack', 2)
       })
    })
+
    describe('pig', () => {
       it('gives extra gold on sell', () => {
          const squad = new Squad([new Animals[1].Pig()])
@@ -100,6 +101,7 @@ describe('tier 1 animals', () => {
          squad.startTurn()
          squad.animalSlots[0] = new Animals[1].Otter()
          squad.animalSlots[1] = new Animals[1].Otter()
+         squad.animalSlots[2] = new Animals[1].Fish()
          squad.buyAnimal(0, 0)
          expect(squad.roster[0]).to.be.instanceOf(Animals[1].Otter)
          expect(squad.roster[0]).to.have.property('attack', 1)
@@ -116,13 +118,14 @@ describe('tier 1 animals', () => {
 
    describe('duck', () => {
       it('buffs shop animals on sell', () => {
-         const squad = new Squad([new Animals[1].Duck(undefined, undefined, 2)])
+         const squad = new Squad([new Animals[1].Duck(1, 2, 2)])
          squad.startTurn()
          const attack1 = squad.animalSlots[0].attack
          const health1 = squad.animalSlots[0].health
          const attack2 = squad.animalSlots[1].attack
          const health2 = squad.animalSlots[1].health
          squad.sell(0)
+         log.warn(squad.animalSlots.map(a => a && a.constructor.name))
          expect(squad.animalSlots[0]).to.have.property('attack', attack1 + 2)
          expect(squad.animalSlots[0]).to.have.property('health', health1 + 2)
          expect(squad.animalSlots[1]).to.have.property('attack', attack2 + 2)
@@ -157,6 +160,18 @@ describe('tier 2 animals', () => {
          expect(roster[1]).to.have.property('attack', 11)
          expect(roster[2]).to.have.property('attack', 11)
          expect(roster[3]).to.have.property('attack', 10)
+      })
+   })
+
+   describe('dog', () => {
+      it('gets buffed in shop', () => {
+         const squad = new Squad([new Animals[2].Dog()])
+         squad.startTurn()
+         squad.animalSlots[0] = new Animals[1].Fish()
+         squad.buyAnimal(0, 1)
+         expect([squad.roster[0].attack, squad.roster[0].health])
+            .to.include.one.that.equals(3)
+            .and.include.one.that.equals(2)
       })
    })
 })

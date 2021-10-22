@@ -39,7 +39,10 @@ class Cricket extends Animal {
    }
 }
 
-class DeadCricket extends Animal {}
+class DeadCricket extends Animal {
+   static baseAttack = 1
+   static baseHealth = 1
+}
 
 class Duck extends Animal {
    static baseAttack = 1
@@ -103,7 +106,6 @@ module.exports = {
    Ant,
    Beaver,
    Cricket,
-   DeadCricket,
    Duck,
    Fish,
    Horse,

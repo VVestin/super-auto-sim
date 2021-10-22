@@ -43,7 +43,7 @@ Animal list (updated Oct 20, 2021)
 ## Tier 2
 - [x] Crab 3/3 - Battle start (copy health from friend ahead)
 - [x] Dodo 1/3 - Battle start (give attack to friend ahead)
-- [ ] Dog 2/2 - Friend summoned (gain +1 health or +1 attack)
+- [x] Dog 2/2 - Friend summoned (gain +1 health or +1 attack)
 - [ ] Elephant 3/5 - Before attack (deal 1 damage to friend behind)
 - [ ] Flamingo 1/3 - Faint (give +1/+1 to friend behind)
 - [ ] Peacock 1/5 - Hurt (gain +2 attack)
