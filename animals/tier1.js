@@ -73,6 +73,16 @@ class Mosquito extends Animal {
    }
 }
 
+class Pig extends Animal {
+   static baseAttack = 2
+   static baseHealth = 2
+
+   sell(mySquad) {
+      super.sell(mySquad)
+      mySquad.gold += this.level
+   }
+}
+
 module.exports = {
    Ant,
    Beaver,
@@ -82,4 +92,5 @@ module.exports = {
    Fish,
    Horse,
    Mosquito,
+   Pig,
 }

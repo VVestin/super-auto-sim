@@ -38,7 +38,7 @@ Animal list (updated Oct 20, 2021)
 - [x] Horse 1/1 - Friend summoned (give them +1 attack)
 - [x] Mosquito 2/2 - Battle start (deal 1 damage to random enemy)
 - [ ] Otter 1/2 - Buy (give friend +1/+1)
-- [ ] Pig 2/2 - Sell (gain 1 extra gold)
+- [x] Pig 2/2 - Sell (gain 1 extra gold)
 
 ## Tier 2
 - [x] Crab 3/3 - Battle start (copy health from friend ahead)

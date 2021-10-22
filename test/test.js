@@ -1,7 +1,10 @@
 const Animals = require('../animals')
 const { Squad, simulateBattle } = require('../sim.js')
 const log = require('loglevel')
-const expect = require('chai').expect
+const chai = require('chai')
+const expect = chai.expect
+chai.use(require('chai-things'))
+
 log.setLevel(log.levels.WARN)
 
 describe('battle simulation', () => {
@@ -78,6 +81,16 @@ describe('tier 1 animals', () => {
          expect(squad.roster[1])
             .to.be.instanceOf(Animals[1].Ant)
             .with.property('attack', 2)
+      })
+   })
+   describe('pig', () => {
+      it('gives extra gold on sell', () => {
+         const squad = new Squad([new Animals[1].Pig()])
+         squad.startTurn()
+         expect(squad.gold).to.equal(10)
+         squad.sell(0)
+         expect(squad.gold).to.equal(12)
+         expect(squad.roster).have.lengthOf(5).and.to.all.equal(null)
       })
    })
 })
