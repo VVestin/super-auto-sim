@@ -125,7 +125,6 @@ describe('tier 1 animals', () => {
          const attack2 = squad.animalSlots[1].attack
          const health2 = squad.animalSlots[1].health
          squad.sell(0)
-         log.warn(squad.animalSlots.map(a => a && a.constructor.name))
          expect(squad.animalSlots[0]).to.have.property('attack', attack1 + 2)
          expect(squad.animalSlots[0]).to.have.property('health', health1 + 2)
          expect(squad.animalSlots[1]).to.have.property('attack', attack2 + 2)
@@ -172,6 +171,17 @@ describe('tier 2 animals', () => {
          expect([squad.roster[0].attack, squad.roster[0].health])
             .to.include.one.that.equals(3)
             .and.include.one.that.equals(2)
+      })
+   })
+
+   describe('peacock', () => {
+      it('gains attack on hurt', () => {
+         const [roster] = simulateBattle(
+            new Squad([new Animals[2].Peacock()]),
+            new Squad([new Animals[1].Duck()])
+         )
+         expect(roster[0]).to.exist.with.property('attack', 5)
+         expect(roster[0]).to.have.property('health', 3)
       })
    })
 })

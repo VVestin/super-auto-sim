@@ -30,6 +30,7 @@ module.exports = class Animal {
    }
 
    attackFront(actionQueue, mySquad, enemySquad) {
+      log.info(this.toString(), 'attacking with damage', this.attack)
       actionQueue.push(
          enemySquad.roster[0].hurt.bind(
             enemySquad.roster[0],

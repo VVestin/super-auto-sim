@@ -1,4 +1,5 @@
 const Animal = require('./animal')
+const log = require('loglevel')
 
 class Crab extends Animal {
    static baseAttack = 3
@@ -35,4 +36,15 @@ class Dog extends Animal {
    }
 }
 
-module.exports = { Crab, Dodo, Dog }
+class Peacock extends Animal {
+   static baseAttack = 1
+   static baseHealth = 5
+
+   hurt(actionQueue, mySquad, enemySquad, damage) {
+      super.hurt(actionQueue, mySquad, enemySquad, damage)
+      if (this.health > 0)
+         actionQueue.push(this.buff.bind(this, this.level * 2, 0))
+   }
+}
+
+module.exports = { Crab, Dodo, Dog, Peacock }
