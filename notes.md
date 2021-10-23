@@ -75,3 +75,23 @@ Animal list (updated Oct 20, 2021)
 - [ ] Skunk 3/5 - Start battle (reduce highest enemy health by 33%)
 - [ ] Squirrel 2/2 - Buy (clear and fill shops with food)
 - [ ] Worm 1/1 - Eat food (gain +1/+1)
+
+## Tier 5
+- [ ] Cow 4/6 - Buy (replace shop food with +2/+2 milk)
+- [ ] Crocodile 6/3 - Start battle (deal 7 damage to last enemy)
+- [ ] Parrot 3/2 - End turn (copy the level 1 ability from the animal in front)
+- [ ] Rhino 5/6 - Knock out (deal 4 damage from the first enemy)
+- [ ] Scorpion 1/1 - No ability
+- [ ] Seal 3/6 - Eats shop food (give 2 random friends +1/+1)
+- [ ] Shark 4/4 - Friend faints (gain +2/+1)
+- [ ] Turkey - Friend summoned (give them +3/+3)
+
+## Tier 6
+- [ ] Cat 4/5 - Food with health and attack effects are doubled
+- [ ] Dragon 6/8 - Friend bought (if friend is level 1, give all friends +1/+1)
+- [ ] Fly 2/2 - Friend faints (summon a 2/2 fly in its place)
+- [ ] Gorilla 6/6 - Hurt (gain coconut shield)
+- [ ] Leopard 6/4 - Battle start (deal 50% of attack damage to 1 random enemy)
+- [ ] Mammoth 2/6 - Faint (give all friends +2/+2)
+- [ ] Snake 6/6 - Friend ahead attacks (deal 5 damage to a random enemy)
+- [ ] Tiger 4/3 - Friend ahead casts their ability twice in battle
